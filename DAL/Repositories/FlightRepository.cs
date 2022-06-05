@@ -9,25 +9,75 @@ namespace DAL.Repositories
 {
     public class FlightRepository : IFlightRepository
     {
-        private readonly DataContext _dataContext;
+        IList<Flight> Flights;
+
         public FlightRepository()
         {
-            _dataContext = new DataContext();
+            LoadFake();
         }
 
+        public IEnumerable<Flight> LoadFake()
+        {
+            var Planes = new List<Plane>
+            {
+                new Plane
+                {
+                    Id = 1,
+                    Consumption = 0,
+                    Name = "Boeing 727"
+                }
+            };
+
+            var Airports = new List<Airport>
+            {
+                new Airport
+                {
+                    Id = 1,
+                    Name= "Aéroport de Paris-Charles de Gaulle",
+                    Latitude = 40.9415053,
+                    Longitude = -10.2917926
+                },
+                new Airport
+                {
+                    Id = 2,
+                    Name= "Aéroport international Mohammed V de Casablanca",
+                    Latitude = 33.3699749,
+                    Longitude = -7.5879118
+                },
+            };
+
+            Flights = new List<Flight>
+            {
+                new Flight
+                {
+                    Id= 1,
+                    Plane= Planes.First(),
+                    PlaneId= Planes.First().Id,
+                    CheckInAirportId= Airports.ToList()[0].Id,
+                    CheckInAirport= Airports.ToList()[0],
+                    CheckOutAirportId= Airports.ToList()[1].Id,
+                    CheckOutAirport= Airports.ToList()[1],
+                    FlightLandingTime= DateTime.Now,
+                    FlightTakeOffTime = DateTime.Now.AddMinutes(120),
+                }
+            };
+
+            return Flights;
+        }
+        
         public IEnumerable<Flight> GetFlights()
         {
-            return _dataContext.Flights;
+            return Flights;
         }
 
         public Flight GetFlight(int Id)
         {
-            return _dataContext.Flights.FirstOrDefault(f => f.Id == Id);
+            return Flights.FirstOrDefault(f => f.Id == Id);
         }
 
         public void BookFlight(Flight Flight)
         {
-            _dataContext.Flights.Add(Flight);
+            Flights.Add(Flight);
         }
 
         public double CalculateDistance(Airport CheckInAirport, Airport CheckOutAirport)

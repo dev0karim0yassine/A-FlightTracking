@@ -13,6 +13,8 @@ namespace Web
         {
             services.AddControllersWithViews();
             services.AddSingleton<IFlightRepository, FlightRepository>();
+            services.AddSingleton<IAirportRepository, AirportRepository>();
+            services.AddSingleton<IPlaneRepository, PlaneRepository>();
         }
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{Id?}");
+                endpoints.MapControllerRoute("default", "{controller=Flight}/{action=Create}/{Id?}");
             });
         }
     }

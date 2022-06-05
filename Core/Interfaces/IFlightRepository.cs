@@ -8,6 +8,7 @@ namespace Core.Interfaces
     public interface IFlightRepository
     {
         void BookFlight(Flight Flight);
+        IEnumerable<Flight> LoadFake();
         IEnumerable<Flight> GetFlights();
         Flight GetFlight(int Id);
         double CalculateEffortTakeOff(Plane Plane);

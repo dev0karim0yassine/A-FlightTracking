@@ -1,0 +1,55 @@
+﻿@using Core.Models
+@model Web.ViewModels.CreateFlightViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Create Flight</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlightTakeOffTime" class="control-label"></label>
+                <input asp-for="FlightTakeOffTime" class="form-control" />
+                <span asp-validation-for="FlightTakeOffTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlightLandingTime" class="control-label"></label>
+                <input asp-for="FlightLandingTime" class="form-control" />
+                <span asp-validation-for="FlightLandingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlaneId" class="control-label"></label>
+                <select asp-for="PlaneId" asp-items="@(new SelectList(Model.Planes, nameof(Plane.Id), nameof(Plane.Name)))" class="form-select" ></select>
+                <span asp-validation-for="PlaneId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckInAirportId" class="control-label"></label>
+                <select asp-for="CheckInAirportId" asp-items="@(new SelectList(Model.CheckInAirport, nameof(Airport.Id), nameof(Airport.Name)))" class="form-select" ></select>
+                <span asp-validation-for="CheckInAirportId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckOutAirportId" class="control-label"></label>
+                <select asp-for="CheckOutAirportId" asp-items="@(new SelectList(Model.CheckOutAirport, nameof(Airport.Id), nameof(Airport.Name)))" class="form-select" ></select>
+                <span asp-validation-for="CheckOutAirportId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
