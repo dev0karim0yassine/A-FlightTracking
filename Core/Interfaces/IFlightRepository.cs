@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Core.Interfaces
 {
-    internal interface IFlightRepository
+    public interface IFlightRepository
     {
         void BookFlight(Flight Flight);
+        IEnumerable<Flight> GetFlights();
         Flight GetFlight(int Id);
         double CalculateEffortTakeOff(Plane Plane);
         double CalculateFlightTime(DateTime FlightTakeOffTime, DateTime FlightLandingTime);

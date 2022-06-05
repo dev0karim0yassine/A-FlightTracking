@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Core.Models
 {
-    internal class Plane
+    public class Plane
     {
         public int Id { get; set; }
         public double Consumption { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Models
 {
-    internal class Airport
+    public class Airport
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Core.Interfaces;
+using DAL.Repositories;
 
 namespace Web
 {
@@ -14,7 +11,8 @@ namespace Web
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews(); //for views
+            services.AddControllersWithViews();
+            services.AddSingleton<IFlightRepository, FlightRepository>();
         }
 
         /// <summary>

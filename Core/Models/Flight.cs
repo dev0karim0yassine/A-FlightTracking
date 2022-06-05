@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Models
 {
-    internal class Flight
+    public class Flight
     {
         public int Id { get; set; }
         public DateTime FlightTakeOffTime { get; set; }
