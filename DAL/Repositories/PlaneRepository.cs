@@ -8,9 +8,7 @@ namespace DAL.Repositories
 {
     public class PlaneRepository : IPlaneRepository
     {
-        public IEnumerable<Plane> LoadFake()
-        {
-            var Planes = new List<Plane>
+        List<Plane> Planes = new List<Plane>
             {
                 new Plane
                 {
@@ -20,6 +18,8 @@ namespace DAL.Repositories
                 }
             };
 
+        public IEnumerable<Plane> LoadFake()
+        {
             return Planes;
         }
     }

@@ -8,10 +8,8 @@ namespace DAL.Repositories
 {
     public class AirportRepository : IAirportRepository
     {
-        public IEnumerable<Airport> LoadFake()
+        readonly List<Airport> Airports = new List<Airport>
         {
-            var Airports = new List<Airport>
-            {
                 new Airport
                 {
                     Id = 1,
@@ -26,8 +24,10 @@ namespace DAL.Repositories
                     Latitude = 33.3699749,
                     Longitude = -7.5879118
                 },
-            };
+        };
 
+        public IEnumerable<Airport> LoadFake()
+        { 
             return Airports;
         }
     }
