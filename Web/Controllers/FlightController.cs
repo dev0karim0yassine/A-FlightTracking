@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Core.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 using Core.Models;
 using Web.ViewModels;
+using Web.Extensions;
 
 namespace Web.Controllers
 {
@@ -11,6 +14,7 @@ namespace Web.Controllers
         private readonly IFlightRepository flightRepository;
         private readonly IPlaneRepository planeRepository;
         private readonly IAirportRepository airportRepository;
+        CreateFlightViewModel FlightViewModel;
 
         public FlightController(IFlightRepository _flightRepository
             , IPlaneRepository _planeRepository
@@ -24,7 +28,15 @@ namespace Web.Controllers
         // GET: FlightController
         public ActionResult Index()
         {
-            var flights = flightRepository.GetFlights();
+            List<Flight> flights = flightRepository.GetFlights().ToList();
+
+            flights.ForEach(f =>
+            {
+                f = f.MapListFlight(
+                    planeRepository.LoadFake().FirstOrDefault(p => p.Id.Equals(f.PlaneId)),
+                    airportRepository.LoadFake().FirstOrDefault(a => a.Id.Equals(f.CheckInAirportId)),
+                    airportRepository.LoadFake().FirstOrDefault(a => a.Id.Equals(f.CheckOutAirport)));
+            });
 
             return View(flights);
         }
@@ -32,12 +44,7 @@ namespace Web.Controllers
         // GET: FlightController/Create
         public ActionResult Create()
         {
-            var FlightViewModel = new CreateFlightViewModel
-            {
-                Planes = planeRepository.LoadFake(),
-                CheckInAirport = airportRepository.LoadFake(),
-                CheckOutAirport = airportRepository.LoadFake()
-            };
+            FlightViewModel = FlightViewModel.InitFlightViewModel(planeRepository.LoadFake(), airportRepository.LoadFake());
 
             return View(FlightViewModel);
         }
@@ -51,34 +58,45 @@ namespace Web.Controllers
                 return View(Flight);
             }
 
+            flightRepository.BookFlight(Flight);
             return RedirectToAction("Index");
         }
 
         // GET: FlightController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var flight = flightRepository.GetFlight(id);
+            FlightViewModel = flight.MapDetailsFlight(planeRepository.LoadFake(), airportRepository.LoadFake());
+
+            return View(FlightViewModel);
         }
 
         // POST: FlightController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Flight Flight)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return View(Flight);
             }
-            catch
-            {
-                return View();
-            }
+
+            flightRepository.EditFlight(id, Flight);
+            return RedirectToAction("Index");
         }
 
         // GET: FlightController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var flight = flightRepository.GetFlight(id);
+            DetailsFlightViewModel viewModel = flight.MapDetailsFlightViewModel(
+                flightRepository.CalculateDistance(flight.CheckInAirport, flight.CheckOutAirport),
+                flightRepository.CalculateEffortTakeOff(flight.Plane),
+                flightRepository.CalculateFlightTime(flight.FlightTakeOffTime, flight.FlightLandingTime),
+                flight.Plane.Name,
+                flight.CheckInAirport.Name, 
+                flight.CheckOutAirport.Name);
+                
+            return View(viewModel);
         }
     }
 }

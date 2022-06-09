@@ -79,6 +79,12 @@ namespace DAL.Repositories
         {
             Flights.Add(Flight);
         }
+        
+        public void EditFlight(int id, Flight Flight)
+        {
+            var i = Flights.IndexOf(Flights.FirstOrDefault(f => f.Id == id));
+            Flights[i] = Flight;
+        }
 
         public double CalculateDistance(Airport CheckInAirport, Airport CheckOutAirport)
         {
