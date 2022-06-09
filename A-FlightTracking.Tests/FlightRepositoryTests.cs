@@ -196,5 +196,55 @@ namespace A_FlightTracking.Tests
             //Assert
             Assert.AreEqual(2, actualFlights.Count());
         }
+
+        [TestMethod]
+        public void CalculateDistance_WhenCheckInAndCheckOutAirports_ReturnNull()
+        {
+            //Arrange
+            flightRepositoryMock.Setup(f =>
+                f.CalculateDistance(ExpectedFlightsInit.First().CheckInAirport, ExpectedFlightsInit.First().CheckOutAirport))
+                .Returns(Math.Round(875.21987854021609));
+
+            //Act
+            var actualDistance = flightRepository.CalculateDistance(ExpectedFlightsInit.First().CheckInAirport, ExpectedFlightsInit.First().CheckOutAirport);
+            double ExpectedDistance = Math.Round(875.21987854021609);
+
+            //Assert
+            Assert.AreEqual(actualDistance, ExpectedDistance);
+        }
+
+        [TestMethod]
+        public void CalculateEffortTakeOff_WhenPlaneConsumptionIsNotNull_ReturnEffortTakeOff()
+        {
+            //Arrange
+            flightRepositoryMock.Setup(f =>
+                f.CalculateEffortTakeOff(ExpectedFlightsInit.First().Plane))
+                .Returns(Math.Round(175.419));
+
+            //Act
+            var actualEffortTakeOff = flightRepository.CalculateEffortTakeOff(ExpectedFlightsInit.First().Plane);
+            double ExpectedEffortTakeOff = Math.Round(175.419);
+
+            //Assert
+            Assert.AreEqual(actualEffortTakeOff, ExpectedEffortTakeOff);
+        }
+
+        [TestMethod]
+        public void CalculateFlightTime_WhenFlightTimesAreNotNull_ReturnFlightTimeTotalHours()
+        {
+            //Arrange
+            DateTime FlightTakeOffTime = DateTime.Now, FlightLandingTime = DateTime.Now.AddMinutes(120);
+            double ExpectedFlightTimeTotalHours = FlightLandingTime.Subtract(FlightTakeOffTime).TotalHours;
+
+            flightRepositoryMock.Setup(f =>
+                f.CalculateFlightTime(ExpectedFlightsInit.First().FlightTakeOffTime, FlightLandingTime))
+                .Returns(ExpectedFlightTimeTotalHours);
+
+            //Act
+            var actualFlightTimeTotalHours = flightRepository.CalculateFlightTime(ExpectedFlightsInit.First().FlightTakeOffTime, FlightLandingTime);
+
+            //Assert
+            Assert.AreEqual(actualFlightTimeTotalHours, ExpectedFlightTimeTotalHours);
+        }
     }
 }
