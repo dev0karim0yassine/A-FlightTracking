@@ -14,7 +14,7 @@ namespace A_FlightTracking.Tests
         IEnumerable<Plane> ExpectedPlanesOK;
 
         [TestMethod]
-        public void LoadFake_WhenPlanesIsInitialized_ReturnsPlanes()
+        public void LoadFake_WhenPlanesAreInitialized_ReturnsPlanes()
         {
             //Arrange
             ExpectedPlanesOK = new List<Plane>

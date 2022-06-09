@@ -14,7 +14,7 @@ namespace A_FlightTracking.Tests
         List<Airport> ExpectedAirportsOK;
 
        [TestMethod]
-        public void LoadFake_WhenAirportsIsInitialized_ReturnsAirports()
+        public void LoadFake_WhenAirportsAreInitialized_ReturnsAirports()
         {
             //Arrange
             Mock<IAirportRepository> airportRepository = new Mock<IAirportRepository>();
